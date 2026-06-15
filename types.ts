@@ -51,6 +51,16 @@ export interface PCBTemplate {
   traces: Trace[];
 }
 
+// ─── 마스크용 결함 영역 ────────────────────────────────────────────────────────
+//  결함이 발생한 위치를 도형으로 기록한다. U-Net 마스크(흰=결함)를 이 정보로 그린다.
+//  - circle: 단선 gap, 냉납 패드 등 점 형태 결함
+//  - line:   브릿지/스크래치 등 선 형태 결함 (radius = 선 굵기 절반)
+//  - rect:   부품 바운딩박스 (오정렬/누락/극성반전)
+export type DefectRegion =
+  | { kind: "circle"; x: number; y: number; r: number; anomaly: AnomalyType }
+  | { kind: "line"; x1: number; y1: number; x2: number; y2: number; r: number; anomaly: AnomalyType }
+  | { kind: "rect"; x: number; y: number; w: number; h: number; anomaly: AnomalyType };
+
 // ─── 패드 오프셋 규격 (부품 중심 기준) ────────────────────────────────────────
 //  드로잉 함수(구동 파일)와 템플릿의 패드 좌표 계산이 모두 이 값을 사용한다.
 
